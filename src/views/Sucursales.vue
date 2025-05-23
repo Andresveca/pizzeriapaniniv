@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <h1>Lista de Sucursales</h1>
+    <h1 class="text-start">Lista de Sucursales | 
+    <button @click="newSucursal()" class="btn btn-success mx-2">
+        <font-awesome-icon icon="plus" />
+      </button>
+      </h1>
     <table class="table">
       <thead>
         <tr>
@@ -13,19 +17,19 @@
       </thead>
       <tbody>
         <tr v-for="(sucursale, index) in sucursales" :key="index">
-          <td>{{ sucursal.id }}</td>
-          <td>{{ sucursal.nombre }}</td>
-          <td>{{ sucursal.direccion }}</td>
-          <td>{{ sucursal.telefono }}</td>
+          <td>{{ sucursale.id }}</td>
+          <td>{{ sucursale.nombre }}</td>
+          <td>{{ sucursale.direccion }}</td>
+          <td>{{ sucursale.telefono }}</td>
           <td>
             <button
-              @click="editarSucursal(sucursal.id)"
+              @click="editarSucursal(sucursale.id)"
               class="btn btn-warning mx-2"
             >
               <font-awesome-icon icon="pencil" />
             </button>
             <button
-              @click="eliminarSucursal(sucursal.id)"
+              @click="eliminarSucursal(sucursale.id)"
               class="btn btn-danger mx-2"
             >
               <font-awesome-icon icon="trash" />
@@ -39,52 +43,55 @@
 
 <script>
 import axios from 'axios';
-import Swalert from 'sweetalert2';
+import Swal from 'sweetalert2'; // Corregido de "Swalert" a "Swal"
 
 export default {
-    name: 'Sucursales',
-    data() {
-        return {
-            sucursales: []
-        };
+  name: 'Sucursales',
+  data() {
+    return {
+      sucursales: []
+    };
+  },
+  methods: {
+    newSucursal() {
+      this.$router.push({ name: 'NuevaSucursal' });
     },
-    methods: {
-        deleteSucursal(id) {
-            Swal.fire({
-                title: `Do you want to delete the Sucursal with id ${id}?`,
-                showCancelButton: true,
-                confirmButtonText: 'Delete it!',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(`http://127.0.0.1:8000/sucursales/${id}`)
-                        .then(response => {
-                            if (response.data.success){
-                                Swal.fire('Deleted!', 'The Sucursal has been deleted.', 'success');
-                                this.sucursales = reponse.data.sucursales;
-                        }
-                        });
-                    }
-                });
-            }
-},
-/*editarSucursal(id) {
-    this.$router.push({ name: 'EditarSucursal', params: { id } }),
-},
-newSucursal() {
-    this.$router.push({ name: 'NuevaSucursal' });
-},*/
-mounted() {
-  axios
-    .get('http://127.0.0.1:8000/api/sucursales')
-    .then((response) => {
-      console.log(response.data); 
-      this.sucursales = response.data.sucursales?.data ?? response.data.sucursales ?? [];
-    })
-    .catch((error) => {
-      console.error('Error al cargar sucursales:', error);
-    });
-},
-
+    editarSucursal(id) {
+      this.$router.push({ name: 'EditarSucursal', params: { id } });
+    },
+    eliminarSucursal(id) {
+      Swal.fire({
+        title: `¿Deseas eliminar la sucursal con ID ${id}?`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://127.0.0.1:8000/sucursales/${id}`)
+            .then((response) => {
+              if (response.data.success) {
+                Swal.fire('¡Eliminado!', 'La sucursal ha sido eliminada.', 'success');
+                this.sucursales = response.data.sucursales;
+              }
+            })
+            .catch((error) => {
+              console.error('Error eliminando sucursal:', error);
+            });
+        }
+      });
+    }
+  },
+  mounted() {
+    axios
+      .get('http://127.0.0.1:8000/api/sucursales')
+      .then((response) => {
+        console.log(response.data);
+        this.sucursales = response.data.sucursales?.data ?? response.data.sucursales ?? [];
+      })
+      .catch((error) => {
+        console.error('Error al cargar sucursales:', error);
+      });
+  }
 };
-
 </script>
+
