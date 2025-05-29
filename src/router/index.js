@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Sucursales from '../views/Sucursales.vue';
 import NewSucursal from '@/components/Sucursales/NewSucursal.vue';
+import EditarSucursal from '@/components/Sucursales/EditarSucursal.vue';
 
 const routes = [
   {
@@ -19,6 +20,12 @@ const routes = [
     path: '/nueva-sucursal',
     name: 'NuevaSucursal',
     component: NewSucursal
+    
+  },
+  {
+    path: '/editar-sucursal/:id',
+    name: 'EditarSucursal',
+    component: EditarSucursal
     
   },
   {

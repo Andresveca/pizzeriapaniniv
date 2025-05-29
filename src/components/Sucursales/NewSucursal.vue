@@ -62,16 +62,19 @@
           </div>
 
           <div class="row mb-3">
-            <label for="user" class="form-label">user: </label>
+            <label for="user_id" class="form-label">Usuario: </label>
             <div class="input-group">
-              <div class="input-group-text"><font-awesome-icon icon="building" /></div>
-              <input
-                type="text"
-                class="form-control"
-                id="iser"
-                placeholder="Usuario Sucursal"
-                v-model="sucursale.user"
-              />
+              <div class="input-group-text"><font-awesome-icon icon="user" /></div>
+              <select class="form-select" v-model="sucursale.user_id">
+                <option selected value="0">Seleccione el Usuario</option>
+                <option
+                  v-for="user in users"
+                  :key="user.id"
+                  :value="user.id"
+                >
+                  {{ user?.name }}
+                </option>
+              </select>
             </div>
           </div>
 
@@ -88,7 +91,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 export default {
-  name: 'NewComuna',
+  name: 'NewSucursal',
   data() {
       return {
         sucursale: {
@@ -96,8 +99,9 @@ export default {
           nombre: '',
           direccion: '',
           telefono: '',
-          user: ''
+          user_id: 0
         },
+        users: []
       }
     },
   methods: {
@@ -119,6 +123,12 @@ export default {
       }
     }
   },
-  
+  mounted() {
+    axios.get('http://127.0.0.1:8000/api/users/')
+      .then(response => {
+        this.users = response.data.users;
+      })
+      .catch(err => console.error(err));
+   }
 }
 </script>

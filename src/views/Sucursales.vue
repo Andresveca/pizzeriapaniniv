@@ -12,6 +12,7 @@
           <th>Nombre</th>
           <th>Dirección</th>
           <th>Teléfono</th>
+          <th>Usuario</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -21,6 +22,7 @@
           <td>{{ sucursale.nombre }}</td>
           <td>{{ sucursale.direccion }}</td>
           <td>{{ sucursale.telefono }}</td>
+          <td>{{ sucursale.user?.name ?? 'Sin asignar' }}</td>
           <td>
             <button
               @click="editarSucursal(sucursale.id)"
@@ -67,7 +69,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://127.0.0.1:8000/sucursales/${id}`)
+            .delete(`http://127.0.0.1:8000/api/sucursales/${id}`)
             .then((response) => {
               if (response.data.success) {
                 Swal.fire('¡Eliminado!', 'La sucursal ha sido eliminada.', 'success');
