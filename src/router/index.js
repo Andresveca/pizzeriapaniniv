@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import Sucursales from '../views/Sucursales.vue';
 import NewSucursal from '@/components/Sucursales/NewSucursal.vue';
 import EditarSucursal from '@/components/Sucursales/EditarSucursal.vue';
+import Clients from '../views/Clients.vue';
+import NewCliente from '@/components/Clients/NewCliente.vue';
 
 const routes = [
   {
@@ -26,6 +28,18 @@ const routes = [
     path: '/editar-sucursal/:id',
     name: 'EditarSucursal',
     component: EditarSucursal
+    
+  },
+  {
+    path: '/Clients',
+    name: 'Clients',
+    component: Clients
+    
+  },
+  {
+    path: '/nuevo-cliente',
+    name: 'NuevoCliente',
+    component: NewCliente
     
   },
   {
