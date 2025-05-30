@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="text-start">
       Lista de Clientes |
-      <button @click="newCliente()" class="btn btn-success mx-2">
+      <button @click="newCliente()" class="btn btn-success mx-2" >
         <font-awesome-icon icon="plus" />
       </button>
     </h1>
@@ -19,7 +19,7 @@
       <tbody>
         <tr v-for="(client, index) in clients" :key="index">
           <td>{{ client.id }}</td>
-          <td>{{ client.user.name }}</td>
+          <td>{{ client.user?.name ?? 'Sin usuario' }}</td>
           <td>{{ client.address }}</td>
           <td>{{ client.phone }}</td>
           <td>
@@ -44,13 +44,13 @@
 
 <script>
 import axios from "axios";
-import Swal from "sweetalert2"; // Corregido de "Swalert" a "Swal"
+import Swal from "sweetalert2";
 
 export default {
   name: "Clients",
   data() {
     return {
-      Clients: [],
+      clients: [],
     };
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
               if (response.data.success) {
                 Swal.fire(
                   "¡Eliminado!",
-                  "La sucursal ha sido eliminada.",
+                  "El cliente ha sido eliminada.",
                   "success"
                 );
                 this.clients = response.data.clients;
@@ -90,9 +90,8 @@ export default {
     axios
       .get("http://127.0.0.1:8000/api/clients")
       .then((response) => {
-        console.log(response.data);
-        this.clients =
-          response.data.clients?.data ?? response.data.clients ?? [];
+      console.log('Clientes cargados:', response.data.clients);
+      this.clients = response.data.clients?.data ?? response.data.clients ?? [];
       })
       .catch((error) => {
         console.error("Error al cargar clientes:", error);

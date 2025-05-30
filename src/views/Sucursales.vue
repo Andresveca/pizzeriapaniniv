@@ -45,7 +45,7 @@
 
 <script>
 import axios from 'axios';
-import Swal from 'sweetalert2'; // Corregido de "Swalert" a "Swal"
+import Swal from 'sweetalert2'; 
 
 export default {
   name: 'Sucursales',
