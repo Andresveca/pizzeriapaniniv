@@ -22,7 +22,7 @@
           <td>{{ sucursale.nombre }}</td>
           <td>{{ sucursale.direccion }}</td>
           <td>{{ sucursale.telefono }}</td>
-          <td>{{ sucursale.user?.name ?? 'Sin asignar' }}</td>
+          <td>{{ sucursale.name ?? 'Sin asignar' }}</td>
           <td>
             <button
               @click="editarSucursal(sucursale.id)"

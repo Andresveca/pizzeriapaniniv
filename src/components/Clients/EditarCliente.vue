@@ -2,9 +2,9 @@
   <div class="container text-start">
     <h1 class="text-primary fw-bold">Editar</h1>
     <div class="card">
-      <div class="card-header fw-bold">Sucursal</div>
+      <div class="card-header fw-bold">Cliente</div>
       <div class="card-body">
-        <form @submit.prevent="updateSucursal">
+        <form @submit.prevent="updateCliente">
           <div>
             <label for="id" class="form.label">No</label>
             <div>
@@ -16,25 +16,26 @@
                   type="text"
                   class="form-control"
                   id="id"
-                  placeholder="No sucursal"
+                  placeholder="No cliente"
                   disabled
-                  v-model="sucursale.id"
+                  v-model="client.id"
                 />
               </div>
             </div>
             <div class="row mb-3">
-              <label for="nombre" class="form-label">Nombre: </label>
+              <label for="id" class="form-label">Usuario: </label>
               <div class="input-group">
                 <div class="input-group-text">
-                  <font-awesome-icon icon="building" />
+                  <font-awesome-icon icon="user" />
                 </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nombre"
-                  placeholder="Nombre Sucursal"
-                  v-model="sucursale.nombre"
-                />
+                <select class="form-select" v-model="client.user_id">
+                  <option selected value="0">Seleccione el Usuario</option>
+                  <option v-for="user in users" v-if="user"
+                  :key="user.id" 
+                  :value="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="row mb-3">
@@ -46,9 +47,9 @@
                 <input
                   type="text"
                   class="form-control"
-                  id="direccion"
+                  id="address"
                   placeholder="Direccion Sucursal"
-                  v-model="sucursale.direccion"
+                  v-model="client.address"
                 />
               </div>
             </div>
@@ -56,32 +57,15 @@
               <label for="telefono" class="form-label">Telefono: </label>
               <div class="input-group">
                 <div class="input-group-text">
-                  <font-awesome-icon icon="building" />
+                  <font-awesome-icon icon="phone" />
                 </div>
                 <input
                   type="text"
                   class="form-control"
-                  id="telefono"
+                  id="phone"
                   placeholder="Telefono Sucursal"
-                  v-model="sucursale.telefono"
+                  v-model="client.phone"
                 />
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="id" class="form-label">Usuario: </label>
-              <div class="input-group">
-                <div class="input-group-text">
-                  <font-awesome-icon icon="bank" />
-                </div>
-                <select class="form-select" v-model="sucursale.user_id">
-                  <option selected value="0">Seleccione el Usuario</option>
-                  <option v-for="user in users" v-if="user"
-                  :key="user.id" 
-                  :value="user.id">
-                    {{ user.name }}
-                  </option>
-                </select>
               </div>
             </div>
             <button class="btn btn-primary" type="submit">Actualizar</button>
@@ -103,34 +87,33 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 export default {
-  name: "EditarSucursal",
+  name: "EditarCliente",
   data() {
     return {
-      sucursale: {
+      client: {
         id: "",
-        nombre: "",
-        direccion: "",
-        telefono: "",
-        user_id: 0,
+        user_id: "",
+        address: "",
+        phone: "",
       },
       users: [],
     };
   },
   methods: {
     cancelar() {
-      this.$router.push({ name: "Sucursales" });
+      this.$router.push({ name: "Clientes" });
     },
-    async updateSucursal() {
+    async updateCliente() {
       const res = await axios.put(
-        `http://127.0.0.1:8000/api/sucursales/${this.sucursale.id}`,
-        this.sucursale
+        `http://127.0.0.1:8000/api/clients/${this.client.id}`,
+        this.client
       );
       if (res.status === 200){
-        this.$router.push({ name: 'Sucursales' });
+        this.$router.push({ name: 'Clientes' });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Sucursal has been updated',
+          title: 'Client has been updated',
           showConfirmButton: false,
           timer: 2000
       });
@@ -138,10 +121,10 @@ export default {
     }
   },
   mounted() {
-    this.sucursale.id = this.$route.params.id;
-    axios.get(`http://127.0.0.1:8000/api/sucursales/${this.sucursale.id}`)
+    this.client.id = this.$route.params.id;
+    axios.get(`http://127.0.0.1:8000/api/clients/${this.client.id}`)
       .then(response => {
-        this.sucursale = response.data.sucursale;
+        this.client = response.data.client;
         this.users = response.data.users;
       })
   }
