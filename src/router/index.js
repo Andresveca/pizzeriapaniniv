@@ -5,6 +5,7 @@ import NewSucursal from '@/components/Sucursales/NewSucursal.vue';
 import EditarSucursal from '@/components/Sucursales/EditarSucursal.vue';
 import Clients from '../views/Clients.vue';
 import NewCliente from '@/components/Clients/NewCliente.vue';
+import EditarCliente from '@/components/Clients/EditarCliente.vue';
 
 const routes = [
   {
@@ -40,6 +41,12 @@ const routes = [
     path: '/nuevo-cliente',
     name: 'NuevoCliente',
     component: NewCliente
+    
+  },
+   {
+    path: '/editar-cliente/:id',
+    name: 'EditarCliente',
+    component: EditarCliente
     
   },
   {
